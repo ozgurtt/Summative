@@ -7,14 +7,16 @@
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import javax.swing.*;
+
 
 public class Menu extends JPanel implements MouseListener{
 
 	private ImageIcon pic=new ImageIcon("MenuBG.png");
+	private Test parent;
 	
-	public Menu(){
+	public Menu(Test parent){
+		this.parent=parent;
 		addMouseListener(this);
 	}
 	
@@ -43,12 +45,15 @@ public class Menu extends JPanel implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		System.out.println("abs");
 		// TODO Auto-generated method stub
 		int x = e.getX();
 		int y = e.getY();
 		if(x >= 1045 && x <= 1185){
+			System.out.println("abs"+x+" "+y);
 			if(y >= 15 && y <= 95){
 				Test.State = Test.STATE.PLAY;
+				parent.updateW();
 			}
 			else if(y >= 115 && y <= 195){
 				Test.State = Test.STATE.HELP;

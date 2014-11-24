@@ -32,4 +32,3 @@ public class Player extends Rectangle {
 		 return new Rectangle(x, y, 100, 100);
 	}
 }
-
