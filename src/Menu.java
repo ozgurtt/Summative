@@ -45,7 +45,6 @@ public class Menu extends JPanel implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		System.out.println("abs");
 		// TODO Auto-generated method stub
 		int x = e.getX();
 		int y = e.getY();
@@ -56,15 +55,19 @@ public class Menu extends JPanel implements MouseListener{
 			}
 			else if(y >= 115 && y <= 195){
 				Test.State = Test.STATE.HELP;
+				parent.updateW();
 			}
 			else if(y >= 215 && y <= 295){
 				Test.State = Test.STATE.SCORE;
+				parent.updateW();
 			}
 			else if(y >= 315 && y <= 395){
 				Test.State = Test.STATE.CREDS;
+				parent.updateW();
 			}
 			else if(y >= 415 && y <= 495){
 				Test.State = Test.STATE.QUIT;
+				parent.updateW();
 			}
 		}
 

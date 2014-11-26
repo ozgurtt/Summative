@@ -27,33 +27,22 @@ public class Test extends JFrame {
 		 super("Jetpack Joyride - By Daniel Li and Connie Yu");
 		 m = new Menu(this);
 		 c = getContentPane();
-		 if(State == STATE.PLAY){
-			 p.setBackground(Color.white);
-			 c.add(p);
-		 }
-		 else if(State == STATE.MENU){
-			 c.add(m);
-		 }
-		 else if(State == STATE.QUIT){
-			 System.exit(0);
-		 }
-		//this.addMouseListener(m);
-		 
+		 c.add(m);
 	}
 	public void updateW(){
 		this.addKeyListener(p);
+		c.removeAll();
 		if(State == STATE.PLAY){
-			c.remove(m);
 			p.setBackground(Color.white);
 			c.add(p);
-		 }
-		 else if(State == STATE.MENU){
-			 c.add(m);
-		 }
-		 else if(State == STATE.QUIT){
-			 System.exit(0);
-		 }
-		revalidate();
+		}
+		else if(State == STATE.MENU){
+			c.add(m);
+		}
+		else if(State == STATE.QUIT){
+			System.exit(0);
+		}
+		validate();
 	}
 	public static void main (String args[]){
 		Test frame = new Test();
