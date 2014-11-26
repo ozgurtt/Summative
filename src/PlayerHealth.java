@@ -9,11 +9,11 @@ import javax.swing.ImageIcon;
 
 public class PlayerHealth {
 	
-	public int interval = 0; //separates health blocks
+	protected int interval = 0; //separates health blocks
 	private ImageIcon heart = new ImageIcon("health.png");
 	
 	public void draw(Graphics g){
-		g.drawImage(heart.getImage(),1200-35-interval,0,30,30,null);
+		g.drawImage(heart.getImage(), 1200 - 35 - interval, 0, 30, 30, null);
 	
 	}
 

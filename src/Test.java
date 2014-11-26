@@ -17,18 +17,20 @@ public class Test extends JFrame {
 		HELP,
 		SCORE,
 		CREDS,
-		QUIT
+		QUIT,
+		PAUSE,
+		GAMEOVER
 	}
 	public static STATE State = STATE.MENU;
-	private Panel p = new Panel();
-	private Menu m;
+	private Play p = new Play(this);
+	private Menu m = new Menu(this);
 	
 	public Test(){
 		 super("Jetpack Joyride - By Daniel Li and Connie Yu");
-		 m = new Menu(this);
 		 c = getContentPane();
 		 c.add(m);
 	}
+	
 	public void updateW(){
 		this.addKeyListener(p);
 		c.removeAll();
@@ -44,6 +46,7 @@ public class Test extends JFrame {
 		}
 		validate();
 	}
+	
 	public static void main (String args[]){
 		Test frame = new Test();
 		frame.setSize(1200,700);

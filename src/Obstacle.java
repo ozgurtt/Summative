@@ -9,8 +9,8 @@ import javax.swing.*;
 
 public class Obstacle extends Background {
 	
-	ImageIcon obstacle1;
-	int sizeX, sizeY, locationY;
+	private ImageIcon obstacle1;
+	private int sizeX, sizeY, locationY;
 	
 	public Obstacle(){
 		obstacle1 = new ImageIcon("Obstacle1.gif");			
@@ -23,11 +23,11 @@ public class Obstacle extends Background {
 			locationY = (int)(Math.random()*100)+200;
 			
 		}
-		g.drawImage(obstacle1.getImage(), 1200-150+dx, locationY, sizeX,sizeY,null);
+		g.drawImage(obstacle1.getImage(), 1200-150 + dx, locationY, sizeX, sizeY , null);
 	}
 	
 	public Rectangle getRect(){
-		return new Rectangle(1200-150+dx, locationY, sizeX, sizeY);
+		return new Rectangle(1200-150 + dx, locationY, sizeX, sizeY);
 	}
 	
 }
