@@ -18,7 +18,6 @@ public class Test extends JFrame {
 		SCORE,
 		CREDS,
 		QUIT,
-		PAUSE,
 		GAMEOVER
 	}
 	public static STATE State = STATE.MENU;

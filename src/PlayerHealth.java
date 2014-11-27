@@ -14,7 +14,6 @@ public class PlayerHealth {
 	
 	public void draw(Graphics g){
 		g.drawImage(heart.getImage(), 1200 - 35 - interval, 0, 30, 30, null);
-	
 	}
 
 }

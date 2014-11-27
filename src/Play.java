@@ -12,12 +12,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.*;
 
-class Play extends JPanel implements KeyListener, ActionListener {
+class Play extends JPanel implements KeyListener, ActionListener, MouseListener {
 	
-	private Player p = new Player(0,1200,0,750);
+	private Player p = new Player(0,1200,0,730);
 	private Background bg = new Background();
 	private Obstacle o = new Obstacle();
 	private Coin cs = new Coin();
@@ -29,13 +30,17 @@ class Play extends JPanel implements KeyListener, ActionListener {
 	private int health = 5;
 	private int distance = 0;
 	private Test parent;
+	private ImageIcon pause1 = new ImageIcon("pause.png");
+	private ImageIcon pause2 = new ImageIcon("pauseScreen.png");
+	private boolean pause = false;
 	
 	public Play(Test parent){
 		this.parent=parent;
-		t = new Timer(30,this);
+		t = new Timer(35,this);
 		t.start();
 		addKeyListener(this);
 		setFocusable(true);
+		addMouseListener(this);
 	}
 	
 	public void up(){
@@ -43,13 +48,13 @@ class Play extends JPanel implements KeyListener, ActionListener {
 			p.y = 0;
 		}
 		else{
-			p.y -= 30;
+			p.y -= 35;
 		}
 	}
 	
 	public void down(){
-		if(p.y >= 580){
-			p.y = 580;
+		if(p.y >= 560){
+			p.y = 560;
 		}
 		else{
 			p.y += ++accel;
@@ -89,12 +94,21 @@ class Play extends JPanel implements KeyListener, ActionListener {
 		Font f = new Font("arial", Font.BOLD, 30);
 		g.setFont(f);
 		g.setColor(Color.black);
-		g.drawString(distance+"M", ShiftWest(60, 2), ShiftNorth(50, 2));
-		g.drawString(distance+"M", ShiftWest(60, 2), ShiftSouth(50, 2));
-		g.drawString(distance+"M", ShiftEast(60, 2), ShiftNorth(50, 2));
-		g.drawString(distance+"M", ShiftEast(60, 2), ShiftSouth(50, 2));
+		g.drawString(distance+"M", ShiftWest(35, 2), ShiftNorth(30, 2));
+		g.drawString(distance+"M", ShiftWest(35, 2), ShiftSouth(30, 2));
+		g.drawString(distance+"M", ShiftEast(35, 2), ShiftNorth(30, 2));
+		g.drawString(distance+"M", ShiftEast(35, 2), ShiftSouth(30, 2));
 		g.setColor(Color.white);
-		g.drawString(distance+"M", 60, 50);
+		g.drawString(distance+"M", 35, 30);
+		g.setColor(Color.black);
+		g.drawString(distance+"M", ShiftWest(35, 2), ShiftNorth(60, 2));
+		g.drawString(distance+"M", ShiftWest(35, 2), ShiftSouth(60, 2));
+		g.drawString(distance+"M", ShiftEast(35, 2), ShiftNorth(60, 2));
+		g.drawString(distance+"M", ShiftEast(35, 2), ShiftSouth(60, 2));
+		g.setColor(Color.yellow);
+		g.drawString(distance+"M", 35, 60);
+		g.drawImage(pause1.getImage(), 1130, 18, 60, 60, null);
+		
 		if(collision() && tDamage == 1){
 			if(tDamage == 1){
 				health --;
@@ -108,9 +122,12 @@ class Play extends JPanel implements KeyListener, ActionListener {
 		for(int i = 0; i < health; i++){
 			hp.draw(g);
 			hp.interval += 35;
-	
 		}
 		hp.interval = 35 * (5 - health);
+		
+		if(pause){
+			g.drawImage(pause2.getImage(),220, 280, null);
+		}
 		repaint();
 	}
 	
@@ -156,6 +173,59 @@ class Play extends JPanel implements KeyListener, ActionListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		int x = e.getX();
+		int y = e.getY();
+		System.out.println(x);
+		System.out.println(y);
+		if(x >= 1145 && x <= 1175 && y >= 30 && y <=65){
+			t.stop();
+			pause = true;
+		}
+		if(pause){
+			if(y >= 275 && y <= 385){
+				if(x >= 215 && x <= 455){
+					Test.State = Test.STATE.MENU;
+					parent.updateW();
+				}
+				else if(x >= 480 && y <= 710){
+					
+				}
+				else if(x >= 730 && y <= 960){
+					t.start();
+					pause = false;
+					repaint();
+				}
+			}
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
