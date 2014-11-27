@@ -20,7 +20,7 @@ public class Test extends JFrame {
 		QUIT,
 		GAMEOVER
 	}
-	public static STATE State = STATE.MENU;
+	public static STATE state = STATE.MENU;
 	private Play p = new Play(this);
 	private Menu m = new Menu(this);
 	
@@ -33,17 +33,18 @@ public class Test extends JFrame {
 	public void updateW(){
 		this.addKeyListener(p);
 		c.removeAll();
-		if(State == STATE.PLAY){
+		if(state == STATE.PLAY){
 			p.setBackground(Color.white);
 			c.add(p);
 		}
-		else if(State == STATE.MENU){
+		else if(state == STATE.MENU){
 			c.add(m);
 		}
-		else if(State == STATE.QUIT){
+		else if(state == STATE.QUIT){
 			System.exit(0);
 		}
 		validate();
+		repaint();
 	}
 	
 	public static void main (String args[]){

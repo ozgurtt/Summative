@@ -14,6 +14,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 class Play extends JPanel implements KeyListener, ActionListener, MouseListener {
@@ -22,6 +24,9 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 	private Background bg = new Background();
 	private Obstacle o = new Obstacle();
 	private Coin cs = new Coin();
+	private ArrayList<Integer> xValues = new ArrayList<Integer>();
+	private ArrayList<Integer> yValues = new ArrayList<Integer>();
+	private ArrayList<CoinDraw> coins = new ArrayList<CoinDraw>();
 	private PlayerHealth hp = new PlayerHealth();
 	private Timer t;
 	private boolean goDown = true;
@@ -33,6 +38,9 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 	private ImageIcon pause1 = new ImageIcon("pause.png");
 	private ImageIcon pause2 = new ImageIcon("pauseScreen.png");
 	private boolean pause = false;
+	private int coinsCollected = 0;
+	private boolean coinsRemove = false;
+	private int cnt = 0; 
 	
 	public Play(Test parent){
 		this.parent=parent;
@@ -72,17 +80,31 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 			return false;
 		}
 	}
+	
 	public int ShiftNorth(int p, int distance) {
 		return (p - distance);
 	}
+	
 	public int ShiftSouth(int p, int distance) {
 		return (p + distance);
 	}
+	
 	public int ShiftEast(int p, int distance) {
 		return (p + distance);
 	}
+	
 	public int ShiftWest(int p, int distance) {
 		return (p - distance);
+	}
+	
+	public void collectCoins(CoinDraw c, int pos){
+		Rectangle player = p.getRect();
+		Rectangle coin = c.getRect();
+		
+		if(player.intersects(coin)){
+			coins.remove(pos);
+			coinsCollected++;
+		}
 	}
 	
 	public void paintComponent(Graphics g){
@@ -90,7 +112,7 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 		bg.draw(g);		
 		p.draw(g);	
 		o.draw(g);
-		cs.draw(g);
+
 		Font f = new Font("arial", Font.BOLD, 30);
 		g.setFont(f);
 		g.setColor(Color.black);
@@ -101,13 +123,30 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 		g.setColor(Color.white);
 		g.drawString(distance+"M", 35, 30);
 		g.setColor(Color.black);
-		g.drawString(distance+"M", ShiftWest(35, 2), ShiftNorth(60, 2));
-		g.drawString(distance+"M", ShiftWest(35, 2), ShiftSouth(60, 2));
-		g.drawString(distance+"M", ShiftEast(35, 2), ShiftNorth(60, 2));
-		g.drawString(distance+"M", ShiftEast(35, 2), ShiftSouth(60, 2));
+		g.drawString(coinsCollected+" O", ShiftWest(35, 2), ShiftNorth(60, 2));
+		g.drawString(coinsCollected+" O", ShiftWest(35, 2), ShiftSouth(60, 2));
+		g.drawString(coinsCollected+" O", ShiftEast(35, 2), ShiftNorth(60, 2));
+		g.drawString(coinsCollected+" O", ShiftEast(35, 2), ShiftSouth(60, 2));
 		g.setColor(Color.yellow);
-		g.drawString(distance+"M", 35, 60);
+		g.drawString(coinsCollected+" O", 35, 60);
 		g.drawImage(pause1.getImage(), 1130, 18, 60, 60, null);
+		
+		xValues = cs.getX();
+		yValues = cs.getY();
+		
+		if(!coinsRemove){
+			for(int i=0; i<xValues.size(); i++){
+				coins.add(new CoinDraw(xValues.get(i),yValues.get(i)));
+			}
+		}
+		
+		if(coins.size()==0)
+			coinsRemove=false;
+		
+		for(int i=0; i<coins.size(); i++){
+			coins.get(i).draw(g);
+			collectCoins(coins.get(i), i);
+		}
 		
 		if(collision() && tDamage == 1){
 			if(tDamage == 1){
@@ -141,12 +180,26 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 			}
 			bg.scroll(); 
 			o.scroll(); 
-			cs.scroll();
-			distance ++;
+			
+			for (int i=0; i<coins.size(); i++){
+				coinsRemove = true;
+				coins.get(i).scroll();
+				if(coins.get(i).posX<=0){
+					coins.remove(i);
+					i--;
+				}
+			}
+			
+			cnt ++;
+			if(cnt % 4 == 0){
+				distance ++;
+			}
+			
 			if(health == 0){
-				Test.State = Test.STATE.GAMEOVER;
+				Test.state = Test.STATE.GAMEOVER;
 				parent.updateW();
 			}
+			
 		}
 	}
 	
@@ -198,8 +251,6 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 		// TODO Auto-generated method stub
 		int x = e.getX();
 		int y = e.getY();
-		System.out.println(x);
-		System.out.println(y);
 		if(x >= 1145 && x <= 1175 && y >= 30 && y <=65){
 			t.stop();
 			pause = true;
@@ -207,13 +258,13 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 		if(pause){
 			if(y >= 275 && y <= 385){
 				if(x >= 215 && x <= 455){
-					Test.State = Test.STATE.MENU;
+					Test.state = Test.STATE.MENU;
 					parent.updateW();
 				}
-				else if(x >= 480 && y <= 710){
+				else if(x >= 480 && x <= 710){
 					
 				}
-				else if(x >= 730 && y <= 960){
+				else if(x >= 730 && x <= 960){
 					t.start();
 					pause = false;
 					repaint();

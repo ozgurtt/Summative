@@ -50,23 +50,23 @@ public class Menu extends JPanel implements MouseListener{
 		int y = e.getY();
 		if(x >= 1045 && x <= 1185){
 			if(y >= 15 && y <= 95){
-				Test.State = Test.STATE.PLAY;
+				Test.state = Test.STATE.PLAY;
 				parent.updateW();
 			}
 			else if(y >= 115 && y <= 195){
-				Test.State = Test.STATE.HELP;
+				Test.state = Test.STATE.HELP;
 				parent.updateW();
 			}
 			else if(y >= 215 && y <= 295){
-				Test.State = Test.STATE.SCORE;
+				Test.state = Test.STATE.SCORE;
 				parent.updateW();
 			}
 			else if(y >= 315 && y <= 395){
-				Test.State = Test.STATE.CREDS;
+				Test.state = Test.STATE.CREDS;
 				parent.updateW();
 			}
 			else if(y >= 415 && y <= 495){
-				Test.State = Test.STATE.QUIT;
+				Test.state = Test.STATE.QUIT;
 				parent.updateW();
 			}
 		}

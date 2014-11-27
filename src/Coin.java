@@ -4,14 +4,11 @@
 //11/21/14
 //Game Coins
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 
-public class Coin extends Background{
+public class Coin{
 	
-	private ImageIcon coin = new ImageIcon("coin.gif");
 	private BufferedReader reader;
 	private String line = null;
 	private ArrayList<Integer> xValues = new ArrayList<Integer>();
@@ -19,12 +16,15 @@ public class Coin extends Background{
 	private int y = 0;
 	
 	public Coin(){
+		
 		try{
 			reader = new BufferedReader(new FileReader("coinLayout1.txt"));
 		}
+		
 		catch (IOException e){
 			e.printStackTrace();
 		}
+		
 		try {
 			while ((line = reader.readLine()) != null) {
 			   y++;
@@ -42,11 +42,12 @@ public class Coin extends Background{
 		}		
 	}
 	
-	public void draw(Graphics g){
-
-		for (int i = 0; i < yValues.size(); i++){
-			g.drawImage(coin.getImage(), 1300 + xValues.get(i)*70 + dx, yValues.get(i) * 70, 30, 30, null);
-		}
+	public ArrayList<Integer> getX(){
+		return xValues;
+	}
+	
+	public ArrayList<Integer> getY(){
+		return yValues;
 	}
 }
 
