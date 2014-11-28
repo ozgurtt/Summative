@@ -34,14 +34,15 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 	private int tDamage = 0;
 	private int health = 5;
 	private int distance = 0;
-	private Test parent;
-	private ImageIcon pause1 = new ImageIcon("pause.png");
-	private ImageIcon pause2 = new ImageIcon("pauseScreen.png");
 	private boolean pause = false;
 	private int coinsCollected = 0;
 	private boolean coinsRemove = false;
 	private int cnt = 0; 
-	
+	private Test parent;
+	private ImageIcon pause1 = new ImageIcon("pause.png");
+	private ImageIcon pause2 = new ImageIcon("pauseScreen.png");
+	private ImageIcon coin = new ImageIcon("coin1.png");
+
 	public Play(Test parent){
 		this.parent=parent;
 		t = new Timer(35,this);
@@ -123,14 +124,16 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 		g.setColor(Color.white);
 		g.drawString(distance+"M", 35, 30);
 		g.setColor(Color.black);
-		g.drawString(coinsCollected+" O", ShiftWest(35, 2), ShiftNorth(60, 2));
-		g.drawString(coinsCollected+" O", ShiftWest(35, 2), ShiftSouth(60, 2));
-		g.drawString(coinsCollected+" O", ShiftEast(35, 2), ShiftNorth(60, 2));
-		g.drawString(coinsCollected+" O", ShiftEast(35, 2), ShiftSouth(60, 2));
+		g.drawString(coinsCollected+"", ShiftWest(35, 2), ShiftNorth(60, 2));
+		g.drawString(coinsCollected+"", ShiftWest(35, 2), ShiftSouth(60, 2));
+		g.drawString(coinsCollected+"", ShiftEast(35, 2), ShiftNorth(60, 2));
+		g.drawString(coinsCollected+"", ShiftEast(35, 2), ShiftSouth(60, 2));
 		g.setColor(Color.yellow);
-		g.drawString(coinsCollected+" O", 35, 60);
+		g.drawString(coinsCollected+"", 35, 60);
 		g.drawImage(pause1.getImage(), 1130, 18, 60, 60, null);
-		
+		String numString = coinsCollected+"";
+		int num = numString.length()-1;
+		g.drawImage(coin.getImage(), 30+16*num, 15, 85, 85, null);
 		xValues = cs.getX();
 		yValues = cs.getY();
 		
@@ -262,7 +265,25 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 					parent.updateW();
 				}
 				else if(x >= 480 && x <= 710){
-					
+					p = new Player(0,1200,0,730);
+					bg = new Background();
+					o = new Obstacle();
+					cs = new Coin();
+					xValues = new ArrayList<Integer>();
+					yValues = new ArrayList<Integer>();
+					coins = new ArrayList<CoinDraw>();
+					hp = new PlayerHealth();
+					goDown = true;
+					accel = 0;
+					tDamage = 0;
+					health = 5;
+					cnt = 0;
+					distance = 0;
+					coinsCollected = 0;
+					coinsRemove = false;
+					t.start();
+					pause = false;
+					repaint();
 				}
 				else if(x >= 730 && x <= 960){
 					t.start();

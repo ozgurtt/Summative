@@ -10,9 +10,9 @@ import javax.swing.ImageIcon;
 
 public class CoinDraw extends Background{
 	
-	ImageIcon coin = new ImageIcon("coin.gif");
-	int x, y;
-	int posX, posY;
+	private ImageIcon coin = new ImageIcon("coin.gif");
+	private int x, y;
+	protected int posX, posY;
 	
 	public CoinDraw(int x, int y){
 		this.x = x;
