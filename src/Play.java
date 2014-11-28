@@ -141,6 +141,7 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 			for(int i=0; i<xValues.size(); i++){
 				coins.add(new CoinDraw(xValues.get(i),yValues.get(i)));
 			}
+			coinsRemove = true;
 		}
 		
 		if(coins.size()==0)
