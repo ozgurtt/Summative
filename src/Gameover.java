@@ -25,7 +25,7 @@ public class Gameover extends JPanel implements MouseListener{
 		this.parent=parent;
 		addMouseListener(this);
 		try{
-			in = new Scanner(new File("scores.txt"));
+			in = new Scanner(new File("distance.txt"));
      	}
 		catch(Exception e){
 			System.out.println(e);	
@@ -33,7 +33,6 @@ public class Gameover extends JPanel implements MouseListener{
 		while(in.hasNextLine()){
 			distance = in.nextLine();
 			if(!in.hasNextLine()){
-				System.out.println(distance);
 				break;
 			}
 		}
@@ -57,16 +56,21 @@ public class Gameover extends JPanel implements MouseListener{
 	
 	
 	public void paintComponent(Graphics g){
-		System.out.println(distance+"!");
-		Font f = new Font("arial", Font.BOLD, 30);
+		Font f = new Font("arial", Font.BOLD, 100);
 		g.setFont(f);
 		g.setColor(Color.black);
-		g.drawString(distance+"M", ShiftWest(35, 2), ShiftNorth(30, 2));
-		g.drawString(distance+"M", ShiftWest(35, 2), ShiftSouth(30, 2));
-		g.drawString(distance+"M", ShiftEast(35, 2), ShiftNorth(30, 2));
-		g.drawString(distance+"M", ShiftEast(35, 2), ShiftSouth(30, 2));
+		g.drawString("YOU FLEW", ShiftWest(300, 2), ShiftNorth(80, 2));
+		g.drawString("YOU FLEW", ShiftWest(300, 2), ShiftSouth(80, 2));
+		g.drawString("YOU FLEW", ShiftEast(300, 2), ShiftNorth(80, 2));
+		g.drawString("YOU FLEW", ShiftEast(300, 2), ShiftSouth(80, 2));
+		g.drawString(distance+"M", ShiftWest(450, 2), ShiftNorth(160, 2));
+		g.drawString(distance+"M", ShiftWest(450, 2), ShiftSouth(160, 2));
+		g.drawString(distance+"M", ShiftEast(450, 2), ShiftNorth(160, 2));
+		g.drawString(distance+"M", ShiftEast(450, 2), ShiftSouth(160, 2));
 		g.setColor(Color.white);
-		g.drawString(distance+"M", 35, 30);
+		g.drawString("YOU FLEW",300,80);
+		g.setColor(Color.yellow);
+		g.drawString(distance+"M", 450, 160);
 		g.setColor(Color.black);
 //		g.drawString(coinsCollected+"", ShiftWest(35, 2), ShiftNorth(60, 2));
 //		g.drawString(coinsCollected+"", ShiftWest(35, 2), ShiftSouth(60, 2));

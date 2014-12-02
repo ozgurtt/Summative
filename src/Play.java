@@ -210,9 +210,8 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 				t.stop();
 				maxDistance = distance;
 				maxCoins = coinsCollected;
-				System.out.println(maxDistance);
 				try{
-					wr = new FileWriter("scores.txt");
+					wr = new FileWriter("distance.txt");
 					wr.write(String.valueOf(maxDistance));
 					wr.close();
 			 	}
