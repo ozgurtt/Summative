@@ -14,7 +14,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.*;
 
@@ -38,11 +42,14 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 	private int coinsCollected = 0;
 	private boolean coinsRemove = false;
 	private int cnt = 0; 
+	private int maxDistance;
+	private int maxCoins;
 	private Test parent;
 	private ImageIcon pause1 = new ImageIcon("pause.png");
 	private ImageIcon pause2 = new ImageIcon("pauseScreen.png");
 	private ImageIcon coin = new ImageIcon("coin1.png");
-
+	Writer wr = null;
+	
 	public Play(Test parent){
 		this.parent=parent;
 		t = new Timer(35,this);
@@ -200,6 +207,18 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 			}
 			
 			if(health == 0){
+				t.stop();
+				maxDistance = distance;
+				maxCoins = coinsCollected;
+				System.out.println(maxDistance);
+				try{
+					wr = new FileWriter("scores.txt");
+					wr.write(String.valueOf(maxDistance));
+					wr.close();
+			 	}
+				catch(Exception e1){
+					System.out.println(e1);	
+				}
 				Test.state = Test.STATE.GAMEOVER;
 				parent.updateW();
 			}

@@ -23,6 +23,7 @@ public class Test extends JFrame {
 	public static STATE state = STATE.MENU;
 	private Play p;
 	private Menu m;
+	private Gameover g;
 	
 	public Test(){
 		 super("Jetpack Joyride - By Daniel Li and Connie Yu");
@@ -33,13 +34,17 @@ public class Test extends JFrame {
 	
 	public void updateW(){
 		c.removeAll();
-		if(state == STATE.PLAY){
+		if(state == STATE.MENU){
+			c.add(m);
+		}
+		else if(state == STATE.PLAY){
 			p = new Play(this);
 			this.addKeyListener(p);
 			c.add(p);
 		}
-		else if(state == STATE.MENU){
-			c.add(m);
+		else if(state == STATE.GAMEOVER){
+			g = new Gameover(this);
+			c.add(g);
 		}
 		else if(state == STATE.QUIT){
 			System.exit(0);
