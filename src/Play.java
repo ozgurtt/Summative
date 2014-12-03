@@ -48,7 +48,7 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 	private ImageIcon pause1 = new ImageIcon("pause.png");
 	private ImageIcon pause2 = new ImageIcon("pauseScreen.png");
 	private ImageIcon coin = new ImageIcon("coin1.png");
-	Writer wr = null;
+	Writer wr, wr1 = null;
 	
 	public Play(Test parent){
 		this.parent=parent;
@@ -212,8 +212,11 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 				maxCoins = coinsCollected;
 				try{
 					wr = new FileWriter("distance.txt");
+					wr1 = new FileWriter("coins.txt");
 					wr.write(String.valueOf(maxDistance));
+					wr1.write(String.valueOf(maxCoins));
 					wr.close();
+					wr1.close();
 			 	}
 				catch(Exception e1){
 					System.out.println(e1);	
