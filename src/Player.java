@@ -24,10 +24,10 @@ public class Player extends Rectangle {
 	}
 	
 	public void draw(Graphics g) {
-		g.drawImage(pic.getImage(),x,y, 100, 100, null);
+		g.drawImage(pic.getImage(),x,y, 80, 80, null);
 	}
 	
 	public Rectangle getRect(){
-		 return new Rectangle(x, y, 100, 100);
+		 return new Rectangle(x, y, (int)(100*0.7), (int)(100*0.7));
 	}
 }

@@ -26,11 +26,21 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 	
 	private Player p = new Player(0,1200,0,730);
 	private Background bg = new Background();
-	private Obstacle o = new Obstacle();
-	private Coin cs = new Coin();
+	private Obstacle o;
+	
+	//for the coins
+	private Coin cs ;
 	private ArrayList<Integer> xValues = new ArrayList<Integer>();
 	private ArrayList<Integer> yValues = new ArrayList<Integer>();
 	private ArrayList<CoinDraw> coins = new ArrayList<CoinDraw>();
+	
+	//for the obstacles
+	private ArrayList<Integer> xObs = new ArrayList<Integer>();
+	private ArrayList<Integer> yObs = new ArrayList<Integer>();
+	private ArrayList<String> obsType = new ArrayList<String>();
+	private ArrayList<ObstacleDraw> obstacles = new ArrayList<ObstacleDraw>();
+	private boolean collide = false;
+	
 	private PlayerHealth hp = new PlayerHealth();
 	private Timer t;
 	private boolean goDown = true;
@@ -41,13 +51,16 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 	private boolean pause = false;
 	private int coinsCollected = 0;
 	private boolean coinsRemove = false;
+	private boolean damageImmune = false;
+	private boolean obstacleRemove = false;
 	private int cnt = 0; 
-	private int maxDistance;
-	private int maxCoins;
 	private Test parent;
 	private ImageIcon pause1 = new ImageIcon("pause.png");
 	private ImageIcon pause2 = new ImageIcon("pauseScreen.png");
 	private ImageIcon coin = new ImageIcon("coin1.png");
+	private int picChange = 0;
+	private int maxDistance;
+	private int maxCoins;
 	Writer wr, wr1 = null;
 	
 	public Play(Test parent){
@@ -77,11 +90,11 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 		}
 	}
 	
-	public boolean collision(){
+	public boolean collision(ObstacleDraw od){
 		Rectangle player = p.getRect();
-		Rectangle obstacle = o.getRect();
+		Rectangle obstacle = od.getRect();
+		
 		if(player.intersects(obstacle)){
-			tDamage ++;
 			return true;
 		}
 		else{
@@ -119,7 +132,7 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 		super.paintComponent(g);
 		bg.draw(g);		
 		p.draw(g);	
-		o.draw(g);
+		
 
 		Font f = new Font("arial", Font.BOLD, 30);
 		g.setFont(f);
@@ -141,8 +154,23 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 		String numString = coinsCollected+"";
 		int num = numString.length()-1;
 		g.drawImage(coin.getImage(), 30+16*num, 15, 85, 85, null);
-		xValues = cs.getX();
-		yValues = cs.getY();
+		
+		
+		if(coins.size()==0){
+			coinsRemove=false;
+			cs = new Coin();
+			xValues = cs.getX();
+			yValues = cs.getY();
+		}
+		
+		if(obstacles.size()==0){
+
+			obstacleRemove=false;
+			o = new Obstacle();
+			xObs = o.getX();
+			yObs = o.getY();
+			obsType = o.getType();
+		}
 		
 		if(!coinsRemove){
 			for(int i=0; i<xValues.size(); i++){
@@ -151,24 +179,35 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 			coinsRemove = true;
 		}
 		
-		if(coins.size()==0)
-			coinsRemove=false;
+		if(!obstacleRemove){
+			for(int i=0; i<xObs.size(); i++){
+				obstacles.add(new ObstacleDraw(xObs.get(i),yObs.get(i), obsType.get(i)));
+			}
+			obstacleRemove = true;
+		}
 		
 		for(int i=0; i<coins.size(); i++){
 			coins.get(i).draw(g);
 			collectCoins(coins.get(i), i);
 		}
-		
-		if(collision() && tDamage == 1){
-			if(tDamage == 1){
+		for(int i=0; i<obstacles.size(); i++){
+			obstacles.get(i).draw(g);
+			collide = collision(obstacles.get(i));
+			if(collide && damageImmune==false){
+				System.out.println("asdf");
 				health --;
 				hp.interval += 35;
-			}
+				damageImmune = true;
+			}		
+		}	
+		if(damageImmune){
+			tDamage++;
 		}
-		//allows for 100 ms invulnerable
-		if(tDamage == 100)
+		//allows for 150 ms invulnerable
+		if(tDamage == 150){
 			tDamage = 0;
-		
+			damageImmune=false;
+		}
 		for(int i = 0; i < health; i++){
 			hp.draw(g);
 			hp.interval += 35;
@@ -190,8 +229,7 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 				up();
 			}
 			bg.scroll(); 
-			o.scroll(); 
-			
+	
 			for (int i=0; i<coins.size(); i++){
 				coinsRemove = true;
 				coins.get(i).scroll();
@@ -200,10 +238,27 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 					i--;
 				}
 			}
+			for (int i=0; i<obstacles.size(); i++){
+				obstacleRemove = true;
+				obstacles.get(i).scroll();
+				if(obstacles.get(i).posX<=-100){
+					obstacles.remove(i);
+					i--;
+				}
+			}
 			
 			cnt ++;
 			if(cnt % 4 == 0){
 				distance ++;
+			}
+			if (picChange<=10){
+				bg.picChoice=0;
+			}
+			else if(picChange>10 && picChange<20){
+				bg.picChoice=1;
+			}
+			else if(picChange==20){
+				picChange=0;
 			}
 			
 			if(health == 0){

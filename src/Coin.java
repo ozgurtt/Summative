@@ -18,14 +18,16 @@ public class Coin{
 	public Coin(){
 		
 		try{
-			reader = new BufferedReader(new FileReader("coinLayout1.txt"));
-		}
+			int layout = (int)(Math.random()*4)+1;
+			reader = new BufferedReader(new FileReader("coinLayout"+layout+".txt"));	
 		
+		}	
 		catch (IOException e){
 			e.printStackTrace();
 		}
 		
 		try {
+		
 			while ((line = reader.readLine()) != null) {
 			   y++;
 			   for(int i = 0 ; i < line.length(); i++){				   

@@ -8,11 +8,12 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
-public class CoinDraw extends Background{
+public class CoinDraw extends Rectangle{
 	
 	private ImageIcon coin = new ImageIcon("coin.gif");
 	private int x, y;
 	protected int posX, posY;
+	int dx = 0;
 	
 	public CoinDraw(int x, int y){
 		this.x = x;
@@ -35,3 +36,4 @@ public class CoinDraw extends Background{
 		return new Rectangle(posX, posY, 80, 80);
 	}
 }
+	
