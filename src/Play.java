@@ -14,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
@@ -61,7 +62,8 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 	private int picChange = 0;
 	private int maxDistance;
 	private int maxCoins;
-	Writer wr, wr1 = null;
+	FileWriter wr, wr1 = null;
+	BufferedWriter bw,bw1=null;
 	
 	public Play(Test parent){
 		this.parent=parent;
@@ -77,7 +79,7 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 			p.y = 0;
 		}
 		else{
-			p.y -= 35;
+			p.y -= 10;
 		}
 	}
 	
@@ -248,17 +250,19 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 			}
 			
 			cnt ++;
-			if(cnt % 4 == 0){
-				distance ++;
-			}
-			if (picChange<=10){
+
+			if (picChange<=100){
 				bg.picChoice=0;
 			}
-			else if(picChange>10 && picChange<20){
+			else if(picChange>100 && picChange<200){
 				bg.picChoice=1;
 			}
-			else if(picChange==20){
+			else if(picChange==200){
 				picChange=0;
+			}
+			if(cnt % 4 == 0){
+				picChange++;
+				distance ++;
 			}
 			
 			if(health == 0){
@@ -266,12 +270,16 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 				maxDistance = distance;
 				maxCoins = coinsCollected;
 				try{
-					wr = new FileWriter("distance.txt");
-					wr1 = new FileWriter("coins.txt");
-					wr.write(String.valueOf(maxDistance));
-					wr1.write(String.valueOf(maxCoins));
-					wr.close();
-					wr1.close();
+					wr = new FileWriter("distance.txt",true);
+					wr1 = new FileWriter("coins.txt",true);
+					bw = new BufferedWriter(wr);
+					bw1 = new BufferedWriter(wr1);
+					bw.write(String.valueOf(maxDistance));
+					bw.newLine();
+					bw1.write(String.valueOf(maxCoins));
+					bw1.newLine();
+					bw.close();
+					bw1.close();
 			 	}
 				catch(Exception e1){
 					System.out.println(e1);	

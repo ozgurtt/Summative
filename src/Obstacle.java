@@ -16,7 +16,7 @@ public class Obstacle{
 	
 	private BufferedReader reader;
 	private String line = null;
-	private ArrayList<String>obsType = new ArrayList<String>();
+	private ArrayList<String> obsType = new ArrayList<String>();
 	private ArrayList<Integer> xObs = new ArrayList<Integer>();
 	private ArrayList<Integer> yObs = new ArrayList<Integer>();
 	private int y;

@@ -74,34 +74,33 @@ public class Gameover extends JPanel implements MouseListener{
 		
 		g.setColor(Color.black);
 		g.setFont(f1);
-		g.drawString("YOU FLEW", ShiftWest(480, 2), ShiftNorth(80, 2));
-		g.drawString("YOU FLEW", ShiftWest(480, 2), ShiftSouth(80, 2));
-		g.drawString("YOU FLEW", ShiftEast(480, 2), ShiftNorth(80, 2));
-		g.drawString("YOU FLEW", ShiftEast(480, 2), ShiftSouth(80, 2));
-		g.drawString("AND COLLECTED", ShiftWest(400, 2), ShiftNorth(250, 2));
-		g.drawString("AND COLLECTED", ShiftWest(400, 2), ShiftSouth(250, 2));
-		g.drawString("AND COLLECTED", ShiftEast(400, 2), ShiftNorth(250, 2));
-		g.drawString("AND COLLECTED", ShiftEast(400, 2), ShiftSouth(250, 2));
+		g.drawString("YOU FLEW", ShiftWest(480, 2), ShiftNorth(100, 2));
+		g.drawString("YOU FLEW", ShiftWest(480, 2), ShiftSouth(100, 2));
+		g.drawString("YOU FLEW", ShiftEast(480, 2), ShiftNorth(100, 2));
+		g.drawString("YOU FLEW", ShiftEast(480, 2), ShiftSouth(100, 2));
+		g.drawString("AND COLLECTED", ShiftWest(400, 2), ShiftNorth(270, 2));
+		g.drawString("AND COLLECTED", ShiftWest(400, 2), ShiftSouth(270, 2));
+		g.drawString("AND COLLECTED", ShiftEast(400, 2), ShiftNorth(270, 2));
+		g.drawString("AND COLLECTED", ShiftEast(400, 2), ShiftSouth(270, 2));
 		g.setFont(f);
-		g.drawString(distance+"M", ShiftWest(500, 2), ShiftNorth(180, 2));
-		g.drawString(distance+"M", ShiftWest(500, 2), ShiftSouth(180, 2));
-		g.drawString(distance+"M", ShiftEast(500, 2), ShiftNorth(180, 2));
-		g.drawString(distance+"M", ShiftEast(500, 2), ShiftSouth(180, 2));
-		g.drawString(coins+"", ShiftWest(550-num1*20, 2), ShiftNorth(350, 2));
-		g.drawString(coins+"", ShiftWest(550-num1*20, 2), ShiftSouth(350, 2));
-		g.drawString(coins+"", ShiftEast(550-num1*20, 2), ShiftNorth(350, 2));
-		g.drawString(coins+"", ShiftEast(550-num1*20, 2), ShiftSouth(350, 2));
-		
+		g.drawString(distance+"M", ShiftWest(530-num*10, 2), ShiftNorth(200, 2));
+		g.drawString(distance+"M", ShiftWest(530-num*10, 2), ShiftSouth(200, 2));
+		g.drawString(distance+"M", ShiftEast(530-num*10, 2), ShiftNorth(200, 2));
+		g.drawString(distance+"M", ShiftEast(530-num*10, 2), ShiftSouth(200, 2));
+		g.drawString(coins+"", ShiftWest(540-num1*20, 2), ShiftNorth(370, 2));
+		g.drawString(coins+"", ShiftWest(540-num1*20, 2), ShiftSouth(370, 2));
+		g.drawString(coins+"", ShiftEast(540-num1*20, 2), ShiftNorth(370, 2));
+		g.drawString(coins+"", ShiftEast(540-num1*20, 2), ShiftSouth(370, 2));
 		
 		g.setColor(Color.white);
 		g.setFont(f1);
-		g.drawString("YOU FLEW",480,80);
-		g.drawString("AND COLLECTED",400,250);
+		g.drawString("YOU FLEW",480,100);
+		g.drawString("AND COLLECTED",400,270);
 		g.setColor(Color.yellow);
 		g.setFont(f);
-		g.drawString(distance+"M", 500, 180);
-		g.drawString(coins+"", 550-num1*20, 350);
-		g.drawImage(coin.getImage(), 530+num1*35, 210, 260, 260, null);
+		g.drawString(distance+"M", 530-num*10, 200);
+		g.drawString(coins+"", 540-num1*20, 370);
+		g.drawImage(coin.getImage(), 520+num1*35, 230, 260, 260, null);
 	}
 	
 	@Override
