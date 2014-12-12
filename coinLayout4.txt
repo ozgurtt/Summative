@@ -1,7 +1,4 @@
-X     X
- X   X 
-  X X
-   X
-  X X 
- X   X
-X     X
+XXXXXXXXX
+XXXXXXXXX
+XXXXXXXXX
+XXXXXXXXX

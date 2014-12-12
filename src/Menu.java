@@ -2,13 +2,12 @@
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
-//Game Menu
+//Menu
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.*;
-
 
 public class Menu extends JPanel implements MouseListener{
 

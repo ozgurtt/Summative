@@ -2,7 +2,7 @@
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
-//Game Player Health
+//Player Health
 
 import java.awt.Graphics;
 import javax.swing.ImageIcon;

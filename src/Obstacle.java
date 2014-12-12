@@ -2,7 +2,7 @@
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
-//Game Obstacles
+//Obstacles
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -22,6 +22,7 @@ public class Obstacle{
 	private int y;
 	
 	public Obstacle(){	
+		//determines the locations of all the obstacles
 		try{
 			int layout = (int)(Math.random()*4)+1;
 			reader = new BufferedReader(new FileReader("obstacleLayout"+layout+".txt"));
@@ -33,12 +34,12 @@ public class Obstacle{
 			while ((line = reader.readLine()) != null) {
 			   y++;
 			   for(int i = 0 ; i < line.length(); i++){				   
-					  
+				//determines the type of obstacle that is being generated	  
 				 if(line.charAt(i)=='X')
 					obsType.add("X");
 				 else if (line.charAt(i)=='N')
 					obsType.add("N");
-				 
+				 //adds the x and y location of each obstacle into an arraylist
 				 if (line.charAt(i)=='X' || line.charAt(i)=='N'){
 					 xObs.add(i);
 					 yObs.add(y);
@@ -51,6 +52,7 @@ public class Obstacle{
 			e.printStackTrace();
 		}		
 	}
+	//returns x, y, and obstacle type of each obstacle
 	public ArrayList<Integer> getX(){
 		return xObs;
 	}

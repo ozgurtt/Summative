@@ -14,6 +14,7 @@ public class Player extends Rectangle {
 	protected int x,y;   
 	private ImageIcon pic=new ImageIcon("Run.gif");
 	
+	//sets the bounds for the players
 	public Player(int left, int right, int top, int bottom){
 		xmin = left;
 	    xmax = right;
@@ -26,8 +27,8 @@ public class Player extends Rectangle {
 	public void draw(Graphics g) {
 		g.drawImage(pic.getImage(),x,y, 80, 80, null);
 	}
-	
+	//rectangle of the player to check for collisions
 	public Rectangle getRect(){
-		 return new Rectangle(x, y, (int)(100*0.7), (int)(100*0.7));
+		 return new Rectangle(x, y, (int)(80*0.5), (int)(80*0.5));
 	}
 }

@@ -36,4 +36,3 @@ public class CoinDraw extends Rectangle{
 		return new Rectangle(posX, posY, 80, 80);
 	}
 }
-	

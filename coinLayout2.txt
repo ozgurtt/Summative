@@ -1,4 +1,5 @@
-XXXX XXXX
-X    X  X
-X    X  X
-XXXX XXXX 
+xxxxx  xxxx  xxxxx
+  x    x     x
+  x    x     xxxxx
+xxxxx  xxxx      x 
+             xxxxx

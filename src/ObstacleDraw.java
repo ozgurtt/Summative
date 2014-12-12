@@ -2,7 +2,7 @@
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
-//Draws Game Obstacles
+//Draws Obstacles
 
 import java.awt.Graphics;
 import java.awt.Rectangle;

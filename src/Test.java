@@ -2,7 +2,7 @@
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
-//Game Window
+//Run Game Window
 
 import java.awt.*;
 import javax.swing.JFrame;
@@ -21,8 +21,9 @@ public class Test extends JFrame {
 		GAMEOVER
 	}
 	public static STATE state = STATE.MENU;
-	private Play p;
 	private Menu m;
+	private Play p;
+	private Score s;
 	private Gameover g;
 	
 	public Test(){
@@ -41,6 +42,10 @@ public class Test extends JFrame {
 			p = new Play(this);
 			this.addKeyListener(p);
 			c.add(p);
+		}
+		else if(state == STATE.SCORE){
+			s = new Score(this);
+			c.add(s);
 		}
 		else if(state == STATE.GAMEOVER){
 			g = new Gameover(this);
