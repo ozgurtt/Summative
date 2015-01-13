@@ -100,7 +100,7 @@ public class Gameover extends JPanel implements MouseListener{
 		g.setFont(f);
 		g.drawString(distance+"M", 530-num*5, 200);
 		g.drawString(coins+"", 522-num1*8, 370);
-		g.drawImage(coin.getImage(), 522+num1*12, 228, 260, 260, null);
+		g.drawImage(coin.getImage(), 522+num1*15, 228, 260, 260, null);
 	}
 	
 	@Override

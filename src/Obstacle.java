@@ -2,7 +2,7 @@
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
-//Obstacles
+//Game Obstacles
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -42,7 +42,7 @@ public class Obstacle{
 				 //adds the x and y location of each obstacle into an arraylist
 				 if (line.charAt(i)=='X' || line.charAt(i)=='N'){
 					 xObs.add(i);
-					 yObs.add(y);
+					 yObs.add(y-1);
 				 }
 			   }			  
 			}

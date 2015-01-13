@@ -1,7 +1,7 @@
+        Q
+Q            N
 Q
-Q
-Q
-Q
+Q    N
 Q
 Q
 X       X          X            X

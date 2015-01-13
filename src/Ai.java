@@ -7,7 +7,10 @@ public class AI extends Player{
 	
 	ImageIcon AIimage = new ImageIcon("enemy.gif");
 	public boolean AIdodge = false;
+	public boolean hardFall = false;
 	private Player p = new Player(0,1200,0,730);
+	public boolean direction;
+	
 	public AI(int left, int right, int top, int bottom){
 		super(left,right,top,bottom);
 		x=50;
@@ -29,14 +32,13 @@ public class AI extends Player{
 	}
 	//code for AI dodging the obstacle
 	public void AImovement(){
-
-		if(y <= 0){		
-			y=0;
-		}
-		else{
-			y-= 20;
-		}
-		AIdodge = true;
+			if(y <= 5 || !direction){	
+				direction = false;
+				y+=3;
+			}		
+			else
+				y-=3;
+		AIdodge = false;
 		
 	}
 	//code for AI when not dodging obstacle, just chasing the player

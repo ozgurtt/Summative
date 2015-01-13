@@ -2,7 +2,7 @@
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
-//Play Game
+//Game Panel
 
 import java.awt.Color;
 import java.awt.Font;
@@ -23,12 +23,13 @@ import java.util.Scanner;
 
 import javax.swing.*;
 
-public class Play extends JPanel implements KeyListener, ActionListener, MouseListener {
+class Play extends JPanel implements KeyListener, ActionListener, MouseListener {
 	
 	private Player p = new Player(0,1200,0,730);
 	private Background bg = new Background();
 	private Obstacle o;
 	private AI ai = new AI(0,1200,0,730);
+	private PowerUp pu = new PowerUp();
 	
 	//for the coins
 	private Coin cs ;
@@ -56,6 +57,7 @@ public class Play extends JPanel implements KeyListener, ActionListener, MouseLi
 	private boolean damageImmune = false;
 	private boolean obstacleRemove = false;
 	private int cnt = 0; 
+	private int magCount = 0;
 	private Test parent;
 	private ImageIcon pause1 = new ImageIcon("pause.png");
 	private ImageIcon pause2 = new ImageIcon("pauseScreen.png");
@@ -65,9 +67,11 @@ public class Play extends JPanel implements KeyListener, ActionListener, MouseLi
 	private int maxDistance;
 	private int maxCoins;
 	
+	private int delay = 45;
+	private boolean magnet = false;
+	
 	FileWriter wr, wr1 = null;
 	BufferedWriter bw,bw1=null;
-	
 	
 	public Play(Test parent){
 		this.parent=parent;
@@ -130,10 +134,28 @@ public class Play extends JPanel implements KeyListener, ActionListener, MouseLi
 		Rectangle player = p.getRect();
 		Rectangle coin = c.getRect();
 		
+		
 		if(player.intersects(coin)){
 			coins.remove(pos);
 			coinsCollected++;
 		}
+	}
+	//checks for powerups
+	public void collectPower(){
+		Rectangle player = p.getRect();
+		Rectangle powerUp = pu.getRect();
+		if(player.intersects(powerUp) && pu.makePowerUp){
+			pu.makePowerUp = false;
+			pu.dx = 0;
+			if(pu.powerType.equals("Money"))
+				coinsCollected+=50;
+			else if( pu.powerType.equals("Magnet")){
+				magnet = true;
+				p.pic = new ImageIcon("magnetMan.gif");
+			}
+		}
+	
+		
 	}
 	
 	public void paintComponent(Graphics g){
@@ -143,6 +165,14 @@ public class Play extends JPanel implements KeyListener, ActionListener, MouseLi
 		p.draw(g);	
 		ai.draw(g);
 		
+		if(cnt%200==0){
+			pu.makePowerUp = true;
+			pu.choice = (int)(Math.random()*2);
+		}
+		if(pu.makePowerUp){
+			pu.draw(g);
+			collectPower();
+		}
 	
 		ai.AIdodge = false; //ai is not dodging at the moment
 		//fonts
@@ -197,30 +227,34 @@ public class Play extends JPanel implements KeyListener, ActionListener, MouseLi
 			}
 			obstacleRemove = true;
 		}
-		
-		//draws all obstacles and coins
-		for(int i=0; i<coins.size(); i++){
-			coins.get(i).draw(g);
-			collectCoins(coins.get(i), i);
-		}
-		for(int i=0; i<obstacles.size(); i++){
-			obstacles.get(i).draw(g);
-			collide = collision(obstacles.get(i));
-			if(collide && damageImmune==false){
-				health --;
-				hp.interval += 35;
-				damageImmune = true;
-				ai.x+=50;
-			}	
-			
-			if(ai.detector(ai.x, ai.y, obstacles.get(i).posX, obstacles.get(i).posY)){
-				ai.AIdodge=true;
-				ai.AImovement();
+		if(distance>10){
+			//draws all obstacles and coins
+			for(int i=0; i<coins.size(); i++){
+				
+				coins.get(i).draw(g);
+				collectCoins(coins.get(i), i);
+				
 			}
-			else if(i==obstacles.size()-1 && !ai.AIdodge)
-				ai.AIdodge = false;
-
-		}	
+			for(int i=0; i<obstacles.size(); i++){
+				obstacles.get(i).draw(g);
+				collide = collision(obstacles.get(i));
+				if(collide && damageImmune==false){
+					health --;
+					hp.interval += 35;
+					damageImmune = true;
+					ai.x+=50;
+				}	
+				
+				if(ai.detector(ai.x, ai.y, obstacles.get(i).posX, obstacles.get(i).posY)){
+					ai.AIdodge=true;
+					ai.AImovement();
+				}
+				else if(i==obstacles.size()-1 && !ai.AIdodge){
+					ai.AIdodge = false;
+				}
+	
+			}	
+		}
 		if(damageImmune){
 			tDamage++;
 		}
@@ -250,7 +284,10 @@ public class Play extends JPanel implements KeyListener, ActionListener, MouseLi
 				up();
 			}
 			bg.scroll(); 
-		
+			
+			if(pu.makePowerUp)
+				pu.scroll();
+			
 			if(!ai.AIdodge)
 				ai.fall(p.y);
 			
@@ -258,23 +295,51 @@ public class Play extends JPanel implements KeyListener, ActionListener, MouseLi
 			for (int i=0; i<coins.size(); i++){
 				coinsRemove = true;
 				coins.get(i).scroll();
+
+				if(magnet){
+					if((coins.get(i).posX - p.x <=300)){
+						if (coins.get(i).posY > p.y)
+							coins.get(i).dy-=15;
+						else if(coins.get(i).posY < p.y)
+							coins.get(i).dy+=15;
+					}
+					
+					magCount++;
+					System.out.println(magCount);
+					
+				}		
+				if(magCount==6000){
+					magCount = 0;
+					magnet = false;
+					p.pic = new ImageIcon("run.gif");
+				}
+				
 				if(coins.get(i).posX<=0){
 					coins.remove(i);
 					i--;
 				}
 			}
 			for (int i=0; i<obstacles.size(); i++){
-				obstacleRemove = true;
 				obstacles.get(i).scroll();
+				obstacleRemove = true;
 				if(obstacles.get(i).posX<=-100){
 					obstacles.remove(i);
 					i--;
 				}
+				
 			}
+			if(obstacles.size()==0)
+				ai.direction = true;
+			
 			cnt ++;
 			if(cnt % 4 == 0){
 				picChange++;
 				distance ++;
+				//as time goes on, the speed of the game becomes faster 
+				if(distance%75==0 && distance>0 && delay>=5){
+					t.setDelay(delay);
+					delay-=5;				
+				}
 			}
 			
 			//determines the background picture
@@ -284,7 +349,8 @@ public class Play extends JPanel implements KeyListener, ActionListener, MouseLi
 				else
 					bg.picChoice++;				
 			}
-		
+			
+			
 			//if hp=0 (player dies), then the screen goes to the gameover screen
 			if(health == 0){
 										

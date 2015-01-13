@@ -2,7 +2,7 @@
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
-//Coins
+//Game Coins
 
 import java.io.*;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class Coin{
 	public Coin(){
 		//reads a random file and creates a coin layout based on the text file read
 		try{
-			int layout = (int)(Math.random()*5)+1;
+			int layout = (int)(Math.random()*7)+1;
 			reader = new BufferedReader(new FileReader("coinLayout"+layout+".txt"));	
 		
 		}	

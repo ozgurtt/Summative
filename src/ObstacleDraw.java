@@ -2,7 +2,7 @@
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
-//Draws Obstacles
+//Draws Game Obstacles
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -25,17 +25,17 @@ public class ObstacleDraw extends Rectangle {
 		this.type = type;
 		
 	}
-	
+	//determines the type of image that should be drawn
 	public void imageType(){
 		if(type.equals("X"))
 			obstacle = obstacle1;
 		else if (type.equals("N"))
 			obstacle = obstacle2;
 	}
-	
+	//draws the obstacles
 	public void draw(Graphics g){
-		posX = 1000 + x * 70 + dx;
-		posY = y * 70;
+		posX = 1000 + x * 77 + dx;
+		posY = y * 77;
 		imageType();
 		g.drawImage(obstacle.getImage(), posX, posY, 200, 200, null);
 	}
@@ -45,7 +45,7 @@ public class ObstacleDraw extends Rectangle {
 	}
 	
 	public Rectangle getRect(){
-		return new Rectangle(posX, posY, (int)(200*0.6), (int)(200*0.6));
+		return new Rectangle(posX, posY, (int)(200*0.5), (int)(200*0.5));
 	}
 
 }

@@ -2,7 +2,7 @@
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
-//Backgrounds
+//Game Background
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,8 +15,7 @@ public class Background extends Rectangle{
 	ImageIcon bg = new ImageIcon("background.png");
 	ImageIcon bg2 = new ImageIcon("background2.png");
 	ImageIcon bg3 = new ImageIcon("background3.png");
-	protected int dx=0;
-	public int picChoice = 0;
+	
 	
 	public Background(){
 		//adds the backgrounds
@@ -24,6 +23,8 @@ public class Background extends Rectangle{
 		pics.add(bg2);
 		pics.add(bg3);
 	}
+	protected int dx=0;
+	public int picChoice = 0;
 	
 	public void draw(Graphics g){
 		g.drawImage(pics.get(picChoice).getImage(),dx,0,2400,800,null);
