@@ -44,23 +44,19 @@ public class Test extends JFrame {
 		if(state == STATE.MENU){
 			c.add(m);
 		}
-		
 		else if(state == STATE.PLAY){
 			p = new Play(this);
 			this.addKeyListener(p);
 			c.add(p);
 		}
-		
 		else if(state == STATE.HELP){
 			h = new Help(this);
 			c.add(h);
 		}
-		
 		else if(state == STATE.SCORE){
 			s = new Score(this);
 			c.add(s);
 		}
-		
 		else if(state == STATE.CREDS){
 			cr = new Creds(this);
 			cr.setLayout(new BorderLayout());
@@ -70,16 +66,13 @@ public class Test extends JFrame {
 			cr.add(label,BorderLayout.SOUTH);
 			c.add(cr);
 		}
-		
 		else if(state == STATE.GAMEOVER){
 			g = new Gameover(this);
 			c.add(g);
 		}
-		
 		else if(state == STATE.QUIT){
 			System.exit(0);
 		}
-		
 		revalidate();
 		repaint();
 	}
