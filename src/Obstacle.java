@@ -1,4 +1,4 @@
-//Connie Yu
+//Daniel Li and Connie Yu
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
@@ -13,18 +13,18 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class Obstacle{
-	
+	//Variables
 	private BufferedReader reader;
 	private String line = null;
 	private ArrayList<String> obsType = new ArrayList<String>();
 	private ArrayList<Integer> xObs = new ArrayList<Integer>();
 	private ArrayList<Integer> yObs = new ArrayList<Integer>();
 	private int y;
-	
+	//Constructor
 	public Obstacle(){	
-		//determines the locations of all the obstacles
+		//Determines the locations of all the obstacles
 		try{
-			int layout = (int)(Math.random()*4)+1;
+			int layout = (int)(Math.random()*5)+1;
 			reader = new BufferedReader(new FileReader("obstacleLayout"+layout+".txt"));
 		}		
 		catch (IOException e){
@@ -34,12 +34,12 @@ public class Obstacle{
 			while ((line = reader.readLine()) != null) {
 			   y++;
 			   for(int i = 0 ; i < line.length(); i++){				   
-				//determines the type of obstacle that is being generated	  
+				//Determines the type of obstacle that is being generated	  
 				 if(line.charAt(i)=='X')
 					obsType.add("X");
 				 else if (line.charAt(i)=='N')
 					obsType.add("N");
-				 //adds the x and y location of each obstacle into an arraylist
+				 //Adds the x and y location of each obstacle into an arraylist
 				 if (line.charAt(i)=='X' || line.charAt(i)=='N'){
 					 xObs.add(i);
 					 yObs.add(y-1);
@@ -52,13 +52,15 @@ public class Obstacle{
 			e.printStackTrace();
 		}		
 	}
-	//returns x, y, and obstacle type of each obstacle
+	//Returns x, y, and obstacle type of each obstacle
 	public ArrayList<Integer> getX(){
 		return xObs;
 	}
+	
 	public ArrayList<Integer> getY(){
 		return yObs;
 	}
+	
 	public ArrayList<String> getType(){
 		return obsType;
 	}

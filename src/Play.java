@@ -1,4 +1,4 @@
-//Connie Yu
+//Daniel Li and Connie Yu
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
@@ -15,35 +15,31 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
-import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Scanner;
-
 import javax.swing.*;
 
 class Play extends JPanel implements KeyListener, ActionListener, MouseListener {
-	
+	//Adding variables for different objects
 	private Player p = new Player(0,1200,0,730);
 	private Background bg = new Background();
 	private Obstacle o;
 	private AI ai = new AI(0,1200,0,730);
 	private PowerUp pu = new PowerUp();
-	
-	//for the coins
+	//Coin Variables
 	private Coin cs ;
 	private ArrayList<Integer> xValues = new ArrayList<Integer>();
 	private ArrayList<Integer> yValues = new ArrayList<Integer>();
 	private ArrayList<CoinDraw> coins = new ArrayList<CoinDraw>();
-	
-	//for the obstacles
+	private ArrayList<Player> people = new ArrayList<Player>();
+	private ArrayList<Background> backdrop = new ArrayList<Background>();
+	//Obstacle Variables
 	private ArrayList<Integer> xObs = new ArrayList<Integer>();
 	private ArrayList<Integer> yObs = new ArrayList<Integer>();
 	private ArrayList<String> obsType = new ArrayList<String>();
 	private ArrayList<ObstacleDraw> obstacles = new ArrayList<ObstacleDraw>();
+	//Misc. Variables
 	private boolean collide = false;
-	
 	private PlayerHealth hp = new PlayerHealth();
 	private Timer t;
 	private boolean goDown = true;
@@ -58,21 +54,20 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 	private boolean obstacleRemove = false;
 	private int cnt = 0; 
 	private int magCount = 0;
+	private boolean invincible=false;
 	private Test parent;
 	private ImageIcon pause1 = new ImageIcon("pause.png");
 	private ImageIcon pause2 = new ImageIcon("pauseScreen.png");
 	private ImageIcon coin = new ImageIcon("coin1.png");
-	private ImageIcon boom = new ImageIcon("boom.gif");
 	private int picChange = 0;
 	private int maxDistance;
 	private int maxCoins;
-	
 	private int delay = 45;
 	private boolean magnet = false;
-	
-	FileWriter wr, wr1 = null;
-	BufferedWriter bw,bw1=null;
-	
+	private int deathTimer=0;
+	private FileWriter wr, wr1 = null;
+	private BufferedWriter bw,bw1=null;
+	//Constructor
 	public Play(Test parent){
 		this.parent=parent;
 		t = new Timer(35,this);
@@ -80,9 +75,10 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 		addKeyListener(this);
 		setFocusable(true);
 		addMouseListener(this);
+		people.add(p);
+		people.add(ai);
 	}
-	
-	//for player movement
+	//Player movement
 	public void up(){
 		if(p.y <= 0){
 			p.y = 0;		
@@ -100,7 +96,7 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 			p.y += ++accel;
 		}
 	}
-	//checks for collision between the generated rectangles
+	//Checks for collision between the generated rectangles
 	public boolean collision(ObstacleDraw od){
 		Rectangle player = p.getRect();
 		Rectangle obstacle = od.getRect();
@@ -112,7 +108,7 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 			return false;
 		}
 	}
-	
+	//Methods for an outlined text style
 	public int ShiftNorth(int p, int distance) {
 		return (p - distance);
 	}
@@ -128,19 +124,17 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 	public int ShiftWest(int p, int distance) {
 		return (p - distance);
 	}
-	
-	//checks if player collides with coins, and collects the coins
+	//Checks if player collides with coins, and collects the coins
 	public void collectCoins(CoinDraw c, int pos){
 		Rectangle player = p.getRect();
 		Rectangle coin = c.getRect();
-		
 		
 		if(player.intersects(coin)){
 			coins.remove(pos);
 			coinsCollected++;
 		}
 	}
-	//checks for powerups
+	//Checks for powerups
 	public void collectPower(){
 		Rectangle player = p.getRect();
 		Rectangle powerUp = pu.getRect();
@@ -153,29 +147,40 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 				magnet = true;
 				p.pic = new ImageIcon("magnetMan.gif");
 			}
-		}
-	
-		
+			else if (pu.powerType.equals("Life")){
+				if(health<5){
+					health+=1;
+					ai.x-=50;
+				}
+			}
+			else if (pu.powerType.equals("Speed")){
+				t.setDelay(4); //Makes the player move super fast
+				invincible = true; //Makes the player invincible for the duration
+				p.pic = new ImageIcon("fast.gif");
+			}
+		}		
 	}
-	
+	//Draws content
 	public void paintComponent(Graphics g){
-		
 		super.paintComponent(g);
+		
 		bg.draw(g);			
 		p.draw(g);	
 		ai.draw(g);
-		
-		if(cnt%200==0){
+		//Creates the powerup and the type of powerup
+		if(cnt%400==0){
 			pu.makePowerUp = true;
-			pu.choice = (int)(Math.random()*2);
+			pu.choice = (int)(Math.random()*4);
 		}
 		if(pu.makePowerUp){
 			pu.draw(g);
-			collectPower();
+			collectPower();		
 		}
+		else if(!pu.makePowerUp)
+			pu = new PowerUp();
 	
-		ai.AIdodge = false; //ai is not dodging at the moment
-		//fonts
+		ai.AIdodge = false; //AI is not dodging at the moment
+		
 		Font f = new Font("arial", Font.BOLD, 30);
 		g.setFont(f);
 		g.setColor(Color.black);
@@ -196,79 +201,79 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 		String numString = coinsCollected+"";
 		int num = numString.length()-1;
 		g.drawImage(coin.getImage(), 30+16*num, 15, 85, 85, null);
-		
-		//resets the obstacles and coins
+		//Resets the obstacles and coins
 		if(coins.size()==0){
 			coinsRemove=false;
 			cs = new Coin();
 			xValues = cs.getX();
 			yValues = cs.getY();
 		}
-		
+		//Creates a new set of obstacles when the old one leaves the map
 		if(obstacles.size()==0){
-
 			obstacleRemove=false;
 			o = new Obstacle();
 			xObs = o.getX();
 			yObs = o.getY();
 			obsType = o.getType();
 		}
-		//generates the obstacles and coins
+		//Generates the obstacles and coins
 		if(!coinsRemove){
 			for(int i=0; i<xValues.size(); i++){
 				coins.add(new CoinDraw(xValues.get(i),yValues.get(i)));
 			}
 			coinsRemove = true;
 		}
-		
+	
 		if(!obstacleRemove){
 			for(int i=0; i<xObs.size(); i++){
 				obstacles.add(new ObstacleDraw(xObs.get(i),yObs.get(i), obsType.get(i)));
 			}
 			obstacleRemove = true;
 		}
-		if(distance>10){
-			//draws all obstacles and coins
-			for(int i=0; i<coins.size(); i++){
-				
-				coins.get(i).draw(g);
-				collectCoins(coins.get(i), i);
-				
-			}
-			for(int i=0; i<obstacles.size(); i++){
-				obstacles.get(i).draw(g);
-				collide = collision(obstacles.get(i));
-				if(collide && damageImmune==false){
-					health --;
-					hp.interval += 35;
-					damageImmune = true;
-					ai.x+=50;
-				}	
-				
-				if(ai.detector(ai.x, ai.y, obstacles.get(i).posX, obstacles.get(i).posY)){
-					ai.AIdodge=true;
-					ai.AImovement();
-				}
-				else if(i==obstacles.size()-1 && !ai.AIdodge){
-					ai.AIdodge = false;
-				}
-	
-			}	
+		//Puts the coins and obstacles into one arraylist
+		backdrop.addAll(coins);
+		backdrop.addAll(obstacles);	
+		//Draws all obstacles and coins
+		for(int i=0; i<coins.size(); i++){
+			coins.get(i).draw(g);
+			collectCoins(coins.get(i), i);
 		}
+		//Generates the obstacles
+		for(int i=0; i<obstacles.size(); i++){
+			obstacles.get(i).draw(g);
+			collide = collision(obstacles.get(i));
+			//Checks for collision, then makes the player lose hp
+			if(collide && damageImmune==false && !invincible && health>0){
+				health --;
+				hp.interval += 35;
+				damageImmune = true;
+				ai.x+=50;
+			}	
+			//AI checks to see if he is within range of obstacles
+			if(ai.detector(ai.x, ai.y, obstacles.get(i).posX, obstacles.get(i).posY) && health>0){
+				ai.AIdodge=true;
+				ai.AImovement();
+			}
+			else if(i==obstacles.size()-1 && !ai.AIdodge && health>0){
+				ai.AIdodge = false;
+			}
+		}
+		
 		if(damageImmune){
 			tDamage++;
 		}
-		//allows for 150 ms invulnerable
+		//Allows for 150 ms invulnerable
 		if(tDamage == 150){
 			tDamage = 0;
 			damageImmune=false;
 		}
+		//Draws the hp hearts
 		for(int i = 0; i < health; i++){
 			hp.draw(g);
 			hp.interval += 35;
 		}
 		hp.interval = 35 * (5 - health);
-		
+		//Displays pause image
 		if(pause){
 			g.drawImage(pause2.getImage(),220, 280, null);
 		}
@@ -276,26 +281,28 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		//Player movement commands
 		if(e.getSource() == t){
-			if(goDown){
-				down();
-			}
-			else{
-				up();
+			if(health>0){
+				if(goDown){
+					down();
+				}
+				else{
+					up();
+				}
 			}
 			bg.scroll(); 
 			
 			if(pu.makePowerUp)
 				pu.scroll();
-			
-			if(!ai.AIdodge)
+			//If AI is not dodging, he will follow the player	
+			if(!ai.AIdodge && health>0)
 				ai.fall(p.y);
-			
-			//the following deals with the obstacles and the coins reaching the end of the screen
+			//Deals with the obstacles and the coins reaching the end of the screen
 			for (int i=0; i<coins.size(); i++){
 				coinsRemove = true;
 				coins.get(i).scroll();
-
+				//If the magnet powerup is active, the coins will be attracted to the player
 				if(magnet){
 					if((coins.get(i).posX - p.x <=300)){
 						if (coins.get(i).posY > p.y)
@@ -305,20 +312,21 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 					}
 					
 					magCount++;
-					System.out.println(magCount);
 					
 				}		
-				if(magCount==6000){
+				//Ends the "magnet" powerup when time is up
+				if(magCount==6000 && health>0){
 					magCount = 0;
 					magnet = false;
 					p.pic = new ImageIcon("run.gif");
 				}
-				
+				//Coins disappear when they reach the end of the screen
 				if(coins.get(i).posX<=0){
 					coins.remove(i);
 					i--;
 				}
 			}
+			//Allows the obstacles to scroll
 			for (int i=0; i<obstacles.size(); i++){
 				obstacles.get(i).scroll();
 				obstacleRemove = true;
@@ -328,43 +336,57 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 				}
 				
 			}
-			if(obstacles.size()==0)
+			//Resets the "AI brain" when obstacles disappear
+			if(obstacles.size()==0){
 				ai.direction = true;
+				ai.moved = false;
+			}
 			
 			cnt ++;
+			
 			if(cnt % 4 == 0){
 				picChange++;
 				distance ++;
-				//as time goes on, the speed of the game becomes faster 
-				if(distance%75==0 && distance>0 && delay>=5){
+				//As time goes on, the speed of the game becomes faster 
+				if(distance%100==0 && distance>0){
 					t.setDelay(delay);
-					delay-=5;				
+					if(delay>=6)
+						delay-=5;	
+					if(invincible&&health>0){
+						invincible = false;
+						p.pic = new ImageIcon("run.gif");
+					}
 				}
 			}
-			
-			//determines the background picture
+			//Determines the background picture
 			if (picChange%50==0 && cnt%4==0 && picChange>0){
-				if(picChange>=150)
-					bg.picChoice=0;
+				if(picChange%250==0)
+					bg.picChoice=1;
 				else
 					bg.picChoice++;				
 			}
-			
-			
-			//if hp=0 (player dies), then the screen goes to the gameover screen
+			//If hp=0 (player dies), then the screen goes to the game over screen
 			if(health == 0){
-										
+				if (deathTimer<=2) //AI gets on top of the player as soon as the player dies then ascends
+					ai.y = p.y;
+				deathTimer++;
+				
+				for(int i=0; i<people.size(); i++){
+					people.get(i).die();
+				}
+				//Does death animation, after 40 ticks, game goes into game over 
+				if(deathTimer==40){
 				Test.state = Test.STATE.GAMEOVER;
 				parent.updateW();
-			
-				
+				}	
 			}
-			
-			if(health == 0){
+			//Game over
+			if(deathTimer == 40){
 				t.stop();
 				maxDistance = distance;
 				maxCoins = coinsCollected;
 				try{
+					//Saves scores
 					wr = new FileWriter("distance.txt",true);
 					wr1 = new FileWriter("coins.txt",true);
 					bw = new BufferedWriter(wr);
@@ -386,12 +408,12 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 			
 		}
 	}
-	
+	//Spacebar methods
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int keyCode = e.getKeyCode();
-		if(keyCode == KeyEvent.VK_SPACE) { 
+		if(keyCode == KeyEvent.VK_SPACE && health>0) { 
 	        up();
 	        goDown = false;
 	    }
@@ -401,7 +423,7 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int keyCode = e.getKeyCode();
-		if(keyCode == KeyEvent.VK_SPACE ) { 
+		if(keyCode == KeyEvent.VK_SPACE) { 
 	       goDown = true;
 	       accel = 0;
 	    }
@@ -439,7 +461,7 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 			t.stop();
 			pause = true;
 		}
-		//resets everything
+		//Resets everything
 		if(pause){
 			if(y >= 275 && y <= 385){
 				if(x >= 215 && x <= 455){
@@ -466,6 +488,7 @@ class Play extends JPanel implements KeyListener, ActionListener, MouseListener 
 					coinsRemove = false;
 					t.start();
 					pause = false;
+					deathTimer = 0;
 					repaint();
 				}
 				else if(x >= 730 && x <= 960){

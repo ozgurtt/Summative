@@ -1,4 +1,4 @@
-//Connie Yu
+//Daniel Li and Connie Yu
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
@@ -10,26 +10,16 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 public class Background extends Rectangle{
-	
-	ArrayList<ImageIcon> pics = new ArrayList<ImageIcon>();
-	ImageIcon bg = new ImageIcon("background.png");
-	ImageIcon bg2 = new ImageIcon("background2.png");
-	ImageIcon bg3 = new ImageIcon("background3.png");
-	
-	
-	public Background(){
-		//adds the backgrounds
-		pics.add(bg);
-		pics.add(bg2);
-		pics.add(bg3);
-	}
+	//Variables
+	private ImageIcon bg ;
 	protected int dx=0;
-	public int picChoice = 0;
-	
+	public int picChoice = 1;
+	//Draws backgrounds
 	public void draw(Graphics g){
-		g.drawImage(pics.get(picChoice).getImage(),dx,0,2400,800,null);
+		bg = new ImageIcon("background"+picChoice+".png");
+		g.drawImage(bg.getImage(),dx,0,2400,800,null);
 	}
-	
+	//Changes backgrounds
 	public void scroll(){
 		dx-=20;
 

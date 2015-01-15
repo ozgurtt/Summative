@@ -1,4 +1,4 @@
-//Connie Yu
+//Daniel Li and Connie Yu
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
@@ -10,15 +10,15 @@ import java.awt.event.MouseListener;
 import javax.swing.*;
 
 public class Menu extends JPanel implements MouseListener{
-
+	//Variables
 	private ImageIcon pic=new ImageIcon("MenuBG.png");
 	private Test parent;
-	
+	//Constructor
 	public Menu(Test parent){
-		this.parent=parent;
+		this.parent=parent; 
 		addMouseListener(this);
 	}
-	
+	//Draws background
 	public void paintComponent(Graphics g){
 		g.drawImage(pic.getImage(),0, 0, null);
 		
@@ -41,7 +41,7 @@ public class Menu extends JPanel implements MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
-
+	//Clicks to corresponding actions
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub

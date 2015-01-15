@@ -1,4 +1,4 @@
-//Connie Yu
+//Daniel Li and Connie Yu
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
@@ -8,15 +8,15 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Coin{
-	
+	//Variables
 	private BufferedReader reader;
 	private String line = null;
 	private ArrayList<Integer> xValues = new ArrayList<Integer>();
 	private ArrayList<Integer> yValues = new ArrayList<Integer>();
 	private int y = 0;
-	
+	//Constructor
 	public Coin(){
-		//reads a random file and creates a coin layout based on the text file read
+		//Reads a random file and creates a coin layout based on the text file read
 		try{
 			int layout = (int)(Math.random()*7)+1;
 			reader = new BufferedReader(new FileReader("coinLayout"+layout+".txt"));	
@@ -27,7 +27,7 @@ public class Coin{
 		}
 		
 		try {
-		//adds the coordinates of the coins into an arraylist
+		//Adds the coordinates of the coins into an arraylist
 			while ((line = reader.readLine()) != null) {
 			   y++;
 			   for(int i = 0 ; i < line.length(); i++){				   
@@ -43,7 +43,7 @@ public class Coin{
 			e.printStackTrace();
 		}		
 	}
-	//returns the coordinates of all the coins
+	//Returns the coordinates of all the coins
 	public ArrayList<Integer> getX(){
 		return xValues;
 	}

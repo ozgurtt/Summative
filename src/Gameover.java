@@ -1,4 +1,4 @@
-//Connie Yu
+//Daniel Li and Connie Yu
 //Ms.Strelkovska
 //ICS4U1-01
 //11/21/14
@@ -15,29 +15,33 @@ import java.util.Scanner;
 import javax.swing.*;
 
 public class Gameover extends JPanel implements MouseListener{
-	
+	//Variables
 	private ImageIcon pic = new ImageIcon("gameover.png");
 	private ImageIcon coin = new ImageIcon("coin1.png");
 	private Test parent;
 	private Scanner in, in1 = null;
 	private String distance, coins = "";
-	
+	//Constructor
 	public Gameover(Test parent){
 		this.parent=parent;
 		addMouseListener(this);
+		//Reads scores from local text files
 		try{
 			in = new Scanner(new File("distance.txt"));
 			in1 = new Scanner(new File("coins.txt"));
      	}
+		
 		catch(Exception e){
 			System.out.println(e);	
 		}
+		
 		while(in.hasNextLine()){
 			distance = in.nextLine();
 			if(!in.hasNextLine()){
 				break;
 			}
 		}
+		
 		while(in1.hasNextLine()){
 			coins = in1.nextLine();
 			if(!in1.hasNextLine()){
@@ -45,7 +49,7 @@ public class Gameover extends JPanel implements MouseListener{
 			}
 		}
 	}
-	
+	//Methods for an outlined text style
 	public int ShiftNorth(int p, int distance) {
 		return (p - distance);
 	}
@@ -61,8 +65,7 @@ public class Gameover extends JPanel implements MouseListener{
 	public int ShiftWest(int p, int distance) {
 		return (p - distance);
 	}
-	
-	
+	//Draws content
 	public void paintComponent(Graphics g){
 		g.drawImage(pic.getImage(), 0, 0, null);
 		Font f = new Font("New Athletic M54", Font.PLAIN, 100);
@@ -71,7 +74,7 @@ public class Gameover extends JPanel implements MouseListener{
 		int num = numDistance.length()-1;
 		String numCoins = coins+"";
 		int num1 = numCoins.length()-1;
-		
+	
 		g.setColor(Color.black);
 		g.setFont(f1);
 		g.drawString("YOU FLEW", ShiftWest(510, 2), ShiftNorth(100, 2));
@@ -82,6 +85,7 @@ public class Gameover extends JPanel implements MouseListener{
 		g.drawString("AND COLLECTED", ShiftWest(450, 2), ShiftSouth(270, 2));
 		g.drawString("AND COLLECTED", ShiftEast(450, 2), ShiftNorth(270, 2));
 		g.drawString("AND COLLECTED", ShiftEast(450, 2), ShiftSouth(270, 2));
+		
 		g.setFont(f);
 		g.drawString(distance+"M", ShiftWest(530-num*5, 2), ShiftNorth(200, 2));
 		g.drawString(distance+"M", ShiftWest(530-num*5, 2), ShiftSouth(200, 2));
@@ -108,7 +112,7 @@ public class Gameover extends JPanel implements MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
-
+	//Clicks to corresponding actions
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
